@@ -6,7 +6,7 @@ services:
     build:
       context: ./docker
 
-    image: plaid/halumi-parse-command
+    image: plaid/halumi-core
 
     volumes:
       - ${HAL_DIR:-./}:/home/ubuntu/halumi:delegated
