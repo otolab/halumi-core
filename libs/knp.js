@@ -127,7 +127,8 @@ const PostJumanProcess = {
     s.push(chunk.toString())
     const words = chunk.toString().split(' ')
     if (words[0] === '明日' && words[5] === '地名') {
-      s.push('@ 明日 あした 明日 名詞 6 時相名詞 10 * 0 * 0 "代表表記:明日/あした カテゴリ:時間"\n')
+      // 辞書を修正するのが正しそうだが、今回はこれで対処
+      s.push('@ 明日 あした 明日 名詞 6 時相名詞 10 * 0 * 0 "代表表記:明日/あした カテゴリ:時間"')
     }
     s.push('')
     callback(null, s.join('\n'))
