@@ -7,7 +7,7 @@ const {Transform} = require('stream')
 const split = require('split')
 
 
-const _processes = null
+let _processes = null
 
 function buildPipeline() {
   const jumanpp = spawn('jumanpp')

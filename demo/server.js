@@ -11,7 +11,7 @@ startAsyncParser()
 
 app.get('/', function(req, res) {
   const text = req.query['text']
-  if (!text) res.sendStatus(400)
+  if (!text) return res.sendStatus(400)
 
   res.setHeader('Access-Control-Allow-Origin', ACCESS_CONTROL_ALLOW_ORIGIN)
 
