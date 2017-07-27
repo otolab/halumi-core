@@ -1,6 +1,12 @@
 "use strict"
 
-const {createDate} = require('sweet-dates')
+const {createDate, setUseServiceTimezoneByDefault, setDefaultLocalization} = require('sweet-dates')
+
+setUseServiceTimezoneByDefault(true)
+setDefaultLocalization({
+  locale: 'ja',
+  timezone: 'Asia/Tokyo'
+})
 
 
 function datePrefilter(src) {
@@ -37,15 +43,16 @@ function dateList(timePhrases) {
   // TODO: 来週の、来月の、のようなcontextへの対応
 
   let contextDate = createDate().reset('day')
+  let stableContextDate = contextDate
   const dates = timePhrases.map((phrase) => {
     let date
     let ret = phrase.sentences.map((sentence) => {
       return sentence.tag('NE:DATE').attr
     })[0]
 
-    if (phrase.tag('強時間').tag && phrase.tag('未来句').tag) {
+    if (phrase.tag('未来句').tag) {
       const v = phrase.normalizedPhrase().split('/')[0]
-      date = createDate(contextDate.get(v, 'ja'))
+      date = createDate(stableContextDate.get(v, 'ja'))
       if (!date.isValid()) return
     }
 
@@ -71,7 +78,10 @@ function dateList(timePhrases) {
 
     if (!date) return
 
-    contextDate = date
+    if (contextDate.getMonth() !== date.getMonth() ||
+        contextDate.getFullYear() !== date.getFullYear()) {
+      contextDate = date
+    }
 
     return {
       date: date,
