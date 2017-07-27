@@ -26,6 +26,7 @@ function comprehend(src, patterns, options={}, cb) {
 
   const parser = withQueue ? enqueue : parse
 
+  src = src.replace(/[\n\r]/g, '')
   src = datePrefilter(src)
 
   return parser(src, (err, cargo) => {

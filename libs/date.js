@@ -52,28 +52,47 @@ function dateList(timePhrases) {
 
     if (phrase.tag('未来句').tag) {
       const v = phrase.normalizedPhrase().split('/')[0]
-      date = createDate(stableContextDate.get(v, 'ja'))
-      if (!date.isValid()) return
+      const d = stableContextDate.get(v, 'ja')
+      if (d.toString() === "Invalid Date") return
+      date = createDate(d)
     }
 
     else if (ret) {
-      date = createDate(contextDate.get(ret, 'ja'))
-      if (!date.isValid()) return
-      if (phrase.tag('カウンタ').attr !== '日') {
+      let d = contextDate.get(ret, 'ja')
+      if (d.toString() === "Invalid Date") {
+        // 「NE:DATE:あした」への対処
+        const v = phrase.normalizedPhrase().split('/')[0]
+        d = contextDate.get(v, 'ja')
+      }
+      if (d.toString() === "Invalid Date") return
+      date = createDate(d)
+
+      if (phrase.tag('カウンタ').attr === '月' || phrase.tag('カウンタ').attr === '年') {
         contextDate = date
         return
       }
     }
 
     else if (phrase.tag('カウンタ').attr === '月' || phrase.tag('カウンタ').attr === '年') {
-      const v = phrase.normalizedPhrase().split('/')[0]
-      contextDate = createDate(contextDate.get(v, 'ja'))
+      const v = phrase.normalizedPhrase().split('/')[1].replace('+', '')
+      const d = contextDate.get(v, 'ja')
+      if (d.toString() === "Invalid Date") return
+      contextDate = createDate(d)
       return
     }
 
     else if (!phrase.tag('カウンタ').attr && phrase.tag('数量').tag) {
       const v = phrase.normalizedPhrase().split('/')[0]
-      date = createDate(contextDate.get(v+'日', 'ja'))
+      const d = contextDate.get(v+'日', 'ja')
+      if (d.toString() === "Invalid Date") return
+      date = createDate(d)
+    }
+
+    else if (phrase.tag('強時間').tag) {
+      const v = phrase.normalizedPhrase().split('/')[0]
+      const d = stableContextDate.get(v, 'ja')
+      if (d.toString() === "Invalid Date") return
+      date = createDate(d)
     }
 
     if (!date) return
@@ -123,8 +142,11 @@ function isTimePhrase(phrase) {
   // 余分な属性を持たない数字は日付とみなす
   if (!phrase.tag('カウンタ').attr && phrase.tag('数量').tag) return true
 
-  // '今日'など
-  if (phrase.tag('強時間').tag && phrase.tag('未来句').tag) return true
+  // '明日'など
+  if (phrase.tag('未来句').tag) return true
+
+  // 'あした'など...
+  if (phrase.tag('強時間').tag) return true
 
   return false
 }

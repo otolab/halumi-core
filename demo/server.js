@@ -19,13 +19,16 @@ app.get('/', function(req, res) {
   let timeout
 
   if (text.length > 80) {
-    res.status(400).send('テキストが長すぎます')
+    res.status(200).send('ながい文章はワカリマセン！')
     return
   }
 
   const request = comprehend(text, patterns, {withQueue: true}, (err, commands) => {
     clearTimeout(timeout)
-    if (err) return res.sendStatus(400)
+    if (err) {
+      console.log(err)
+      return res.sendStatus(400)
+    }
     if (!aborted) res.send(buildReply(commands))
   })
 
