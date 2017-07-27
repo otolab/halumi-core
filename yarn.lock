@@ -254,6 +254,13 @@ sugar-date@^2.0.4:
     sugar-date "^2.0.4"
     timezone-js "^0.4.13"
 
+"sweet-dates@https://github.com/otolab/sweet-detes.git#0.1.4":
+  version "0.1.4"
+  resolved "https://github.com/otolab/sweet-detes.git#95181abd5c836e20ca187b02604ebfc3e90050a0"
+  dependencies:
+    sugar-date "^2.0.4"
+    timezone-js "^0.4.13"
+
 through@2:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"

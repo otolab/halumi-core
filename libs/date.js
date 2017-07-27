@@ -31,9 +31,9 @@ function datePrefilter(src) {
 
 function genDateRange(start, end) {
   const ret = []
-  let d = createDate(start.clone()).reset('day')
+  let d = createDate(start).get('今日', 'ja')
   while (d <= end) {
-    ret.push(createDate(d.clone()))
+    ret.push(createDate(d))
     d.addDays(1)
   }
   return ret
@@ -42,7 +42,7 @@ function genDateRange(start, end) {
 function dateList(timePhrases) {
   // TODO: 来週の、来月の、のようなcontextへの対応
 
-  let contextDate = createDate().reset('day')
+  let contextDate = createDate().get('今日', 'ja')
   let stableContextDate = contextDate
   const dates = timePhrases.map((phrase) => {
     let date
