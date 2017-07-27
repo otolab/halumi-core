@@ -29,6 +29,8 @@ function comprehend(src, patterns, options={}, cb) {
   src = src.replace(/[\n\r]/g, '')
   src = datePrefilter(src)
 
+  if (!src) return cb(null, [])
+
   return parser(src, (err, cargo) => {
     if (err) return cb ? cb(err, commands) : err;
 
