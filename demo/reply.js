@@ -56,7 +56,7 @@ function buildReply(commands) {
     })
 
     if (zatsudan) {
-      reply.push("（雑談モードデスヨ）");
+      reply.push("むずかしい言葉はワカンナイデス。雑談モードとかあったら楽しいデスヨ");
     }
 
     return reply.join('\n')
