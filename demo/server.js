@@ -19,9 +19,15 @@ app.get('/', function(req, res) {
   let timeout
 
   if (text.length > 80) {
-    res.status(200).send('ながい文章はワカリマセン！')
+    res.send('ながい文章はワカリマセン！')
     return
   }
+
+  timeout = setTimeout(() => {
+    dequeue(request)
+    aborted = true
+    res.sendStatus(504)
+  }, 5000)
 
   const request = comprehend(text, patterns, {withQueue: true}, (err, commands) => {
     clearTimeout(timeout)
@@ -31,12 +37,6 @@ app.get('/', function(req, res) {
     }
     if (!aborted) res.send(buildReply(commands))
   })
-
-  timeout = setTimeout(() => {
-    dequeue(request)
-    aborted = true
-    res.sendStatus(504)
-  }, 5000)
 })
 
 app.listen(8080)
