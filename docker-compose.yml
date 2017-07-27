@@ -8,10 +8,18 @@ services:
 
     image: plaid/halumi-core
 
+    environment:
+      SERVER_MODE: "true"
+      # ACCESS_CONTROL_ALLOW_ORIGIN: "tech.plaid.co.jp"
+
+    ports:
+      - 80:8080
+
     volumes:
       - ${HAL_DIR:-./}:/home/ubuntu/halumi:delegated
       - global-node-modules:/usr/local/lib/node_modules
       - yarn-cache:/home/ubuntu/.cache/yarn
+
     cap_add:
       - SYS_TIME
 
