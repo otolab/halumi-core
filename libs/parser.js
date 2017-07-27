@@ -7,7 +7,7 @@ const {Transform} = require('stream')
 const split = require('split')
 
 
-const _processes = []
+const _processes = null
 
 function buildPipeline() {
   const jumanpp = spawn('jumanpp')
@@ -25,11 +25,13 @@ function buildPipeline() {
 }
 
 function getPipeline() {
-  setTimeout(() => {
-    _processes.push(buildPipeline())
-  }, 0)
+  if (_processes) {
+    setTimeout(() => {
+      _processes.push(buildPipeline())
+    }, 0)
+  }
 
-  let p = _processes.shift()
+  let p = _processes && _processes.shift()
   if (!p) return buildPipeline()
   return p
 }
@@ -86,6 +88,7 @@ function dequeue(request) {
 }
 
 function start() {
+  _processes = []
   for(let n=0; n<8; n++) _processes.push(buildPipeline())
   setInterval(run, 100)
 }
