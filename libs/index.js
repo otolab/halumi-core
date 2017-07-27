@@ -1,6 +1,6 @@
 "use strict"
 
-const {parse} = require('./knp')
+const {parse, enqueue, dequeue, start} = require('./parser')
 const {datePrefilter, dateList} = require('./date')
 const {findPattern, findInvolvedTimePhrases, extractStatus} = require('./base')
 
@@ -18,11 +18,17 @@ function match(patterns, phrases) {
 }
 
 function comprehend(src, patterns, options={}, cb) {
+  const {withQueue} = Object.assign({
+    withQueue: false
+  }, options)
+
   let commands = []
+
+  const parser = withQueue ? enqueue : parse
 
   src = datePrefilter(src)
 
-  parse(src, (err, cargo) => {
+  return parser(src, (err, cargo) => {
     if (err) return cb ? cb(err, commands) : err;
 
     for (let k in patterns) {
@@ -52,5 +58,7 @@ function comprehend(src, patterns, options={}, cb) {
 
 
 module.exports = {
-  comprehend: comprehend
+  comprehend: comprehend,
+  dequeue: dequeue,
+  startAsyncParser: start
 }

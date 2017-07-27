@@ -1,11 +1,5 @@
 "use strict"
 
-// from: https://github.com/hecomi/node-mecab-async/blob/master/mecab.js
-
-const spawn = require('child_process').spawn
-const {Transform} = require('stream')
-const split = require('split')
-
 const StateMachine = require('./state-machine')
 const {Phrase, Sentence} = require('./base')
 
@@ -54,7 +48,7 @@ const extractKakuResult = function(line) {
 
 }
 
-const _generateMachine = function() {
+const generateMachine = function() {
   const m = new StateMachine()
 
   // cargo初期化
@@ -135,43 +129,8 @@ const PostJumanProcess = {
   }
 };
 
-function buildPipeline() {
-  const jumanpp = spawn('jumanpp')
-  const knp = spawn('knp', ['-tab', '-anaphora'])
-
-  jumanpp.stdout
-    .pipe(require('split')())
-    .pipe(new Transform(PostJumanProcess))
-    .pipe(knp.stdin)
-
-  return {
-    input: jumanpp.stdin,
-    output: knp.stdout
-  }
-}
-
-const parse = function(src, callback) {
-  const {input, output} = buildPipeline()
-  let m = _generateMachine()
-  let data = []
-
-  output
-    .pipe(split())
-    .on('data', (line) => {
-      data.push(line)
-    })
-    .on('end', () => {
-      m.set(data)
-      return m.run()
-        .then((cargo) => callback(null, cargo))
-        .catch(err => callback(err))
-    })
-
-  input.write(src)
-  input.end()
-}
-
 
 module.exports = {
- parse: parse
+  PostJumanProcess: PostJumanProcess,
+  generateMachine: generateMachine
 }
