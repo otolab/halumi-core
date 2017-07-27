@@ -12,6 +12,6 @@
     "co": "^4.6.0",
     "express": "^4.15.3",
     "split": "^1.0.0",
-    "sweet-dates": "https://github.com/otolab/sweet-detes.git#0.1.4"
+    "sweet-dates": "https://github.com/otolab/sweet-detes.git#0.1.5"
   }
 }
