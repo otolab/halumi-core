@@ -4,6 +4,11 @@ function buildReply(commands) {
     const reply = []
 
     commands.forEach((command) => {
+      if (command.command === 'tsukare') {
+        zatsudan = false;
+        reply.push("おつかれさまデス！旅行や休暇の申請をするとイイデス")
+      }
+
       if (command.command === 'voyage') {
         if (command.status.length == 0) {
           zatsudan = false;
