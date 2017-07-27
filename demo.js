@@ -14,7 +14,7 @@ const patterns = {
     ['休む'],
     ['休み']
   ],
-  voyaju: [
+  voyage: [
     ['旅行', '*', '行く'],
     ['旅行', '*', '予定']
   ]
@@ -54,7 +54,7 @@ function printCommands(commands) {
     console.log('input:', commands[0].source)
 
     commands.forEach((command) => {
-      if (command.command === 'voyaju') {
+      if (command.command === 'voyage') {
         if (command.status.length == 0) {
           zatsudan = false;
           console.log("おお、いいですね。いってらっしゃいマシ！！");
