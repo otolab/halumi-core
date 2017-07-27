@@ -62,7 +62,7 @@ function dateList(timePhrases) {
         // 「NE:DATE:あした」への対処
         const v = phrase.normalizedPhrase().split('/')[0]
         date = contextDate.get(v, 'ja')
-        if (date.isValid()) return
+        if (!date.isValid()) return
       }
 
       if (phrase.tag('カウンタ').attr === '月' || phrase.tag('カウンタ').attr === '年') {
@@ -74,7 +74,7 @@ function dateList(timePhrases) {
     else if (phrase.tag('カウンタ').attr === '月' || phrase.tag('カウンタ').attr === '年') {
       const v = phrase.normalizedPhrase().split('/')[1].replace('+', '')
       date = contextDate.get(v, 'ja')
-      if (date.isValid()) return
+      if (!date.isValid()) return
       contextDate = date
       return
     }
@@ -82,13 +82,13 @@ function dateList(timePhrases) {
     else if (!phrase.tag('カウンタ').attr && phrase.tag('数量').tag) {
       const v = phrase.normalizedPhrase().split('/')[0]
       date = contextDate.get(v+'日', 'ja')
-      if (date.isValid()) return
+      if (!date.isValid()) return
     }
 
     else if (phrase.tag('強時間').tag) {
       const v = phrase.normalizedPhrase().split('/')[0]
       date = stableContextDate.get(v, 'ja')
-      if (date.isValid()) return
+      if (!date.isValid()) return
     }
 
     if (!date) return

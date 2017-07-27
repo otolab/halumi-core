@@ -53,4 +53,8 @@ else {
   comprehend("お休みします。8/1に。", patterns, {}, (err, commands) => {
     printCommands(commands)
   })
+
+  comprehend("あしたはお休みします。", patterns, {}, (err, commands) => {
+    printCommands(commands)
+  })
 }
