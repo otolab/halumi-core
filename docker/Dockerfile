@@ -56,6 +56,8 @@ RUN \
   && cd knp-4.17; ./configure && make && sudo make install && sudo ldconfig \
   && cd .. ; rm -rf knp-4.17 knp-4.17.tar.bz2 ; knp -v
 
+RUN sudo apt-get install -y tzdata && sudo apt-get clean
+
 COPY entrypoint.sh ./
 
 ENTRYPOINT ["/home/ubuntu/entrypoint.sh"]
