@@ -30,7 +30,18 @@ class Phrase {
   is(obj) {
     if (typeof obj === 'string' || obj instanceof String) {
       const norm = this.normalizedPhrase()
-      if (norm === obj || norm.split(/[\/\?]/g).includes(obj)) return true
+      if (norm === obj) return true
+      if (norm.split(/[\/\?]/g).includes(obj)) return true
+
+      const a = norm.split('+')
+      const b = obj.split('+')
+      if (b.every((w) => {
+        if (!a.length) return
+        let t = a.shift()
+        return t.split(/[\/\?+]/g).includes(w)
+      })) {
+        return true
+      }
     }
     if (obj.type === 'date') {
       return this.sentences.some((sentence) => {
