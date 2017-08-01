@@ -17,6 +17,16 @@ function match(patterns, phrases) {
   return null
 }
 
+function _parse(src, options={}, cb) {
+  const {withQueue} = Object.assign({
+    withQueue: false
+  }, options)
+
+  const parser = withQueue ? enqueue : parse
+
+  return parser(src, cb)
+}
+
 function comprehend(src, patterns, options={}, cb) {
   const {withQueue} = Object.assign({
     withQueue: false
@@ -24,14 +34,12 @@ function comprehend(src, patterns, options={}, cb) {
 
   let commands = []
 
-  const parser = withQueue ? enqueue : parse
-
   src = src.replace(/[\n\r\s]*/g, '')
   src = datePrefilter(src)
 
   if (!src) return cb(null, [])
 
-  return parser(src, (err, cargo) => {
+  return _parse(src, {withQueue}, (err, cargo) => {
     if (err) return cb ? cb(err, commands) : err;
 
     for (let k in patterns) {
@@ -61,6 +69,7 @@ function comprehend(src, patterns, options={}, cb) {
 
 
 module.exports = {
+  parse: _parse,
   comprehend: comprehend,
   dequeue: dequeue,
   startAsyncParser: start
