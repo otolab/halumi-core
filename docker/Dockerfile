@@ -50,11 +50,22 @@ RUN \
   && cd jumanpp-1.02; ./configure && make && sudo make install && sudo ldconfig \
   && cd .. ; rm -rf jumanpp-1.02 jumanpp-1.02.tar.xz
 
+COPY update_knp_auto_dict.sh /usr/local/bin
+COPY knp_user.dat knp_dict/user.dat
+
+RUN \
+  sudo chown ubuntu -R knp_dict
+
 RUN \
   curl -O -L "http://nlp.ist.i.kyoto-u.ac.jp/DLcounter/lime.cgi?down=http://nlp.ist.i.kyoto-u.ac.jp/nl-resource/knp/knp-4.17.tar.bz2" \
   && tar jxvf knp-4.17.tar.bz2 \
   && cd knp-4.17; ./configure && make && sudo make install && sudo ldconfig \
-  && cd .. ; rm -rf knp-4.17 knp-4.17.tar.bz2 ; knp -v
+  && cd .. \
+  && mkdir -p knp_dict && cp knp-4.17/system/make_db knp_dict \
+  && cp knp-4.17/dict/auto/auto.dat knp-4.17/dict/auto/wikipedia.dat knp_dict \
+  && gzip -9 knp_dict/auto.dat knp_dict/wikipedia.dat \
+  && rm -rf knp-4.17 knp-4.17.tar.bz2 && knp -v \
+  && update_knp_auto_dict.sh
 
 COPY entrypoint.sh ./
 
