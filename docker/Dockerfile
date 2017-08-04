@@ -53,6 +53,9 @@ RUN \
 RUN \
   mkdir knp_dict
 
+COPY update_knp_auto_dict.sh /usr/local/bin
+COPY knp_user.dat knp_dict/user.dat
+
 RUN \
   curl -O -L "http://nlp.ist.i.kyoto-u.ac.jp/DLcounter/lime.cgi?down=http://nlp.ist.i.kyoto-u.ac.jp/nl-resource/knp/knp-4.17.tar.bz2" \
   && tar jxvf knp-4.17.tar.bz2 \
@@ -63,9 +66,6 @@ RUN \
   && gzip -9 knp_dict/auto.dat knp_dict/wikipedia.dat \
   && rm -rf knp-4.17 knp-4.17.tar.bz2 && knp -v \
   && update_knp_auto_dict.sh
-
-COPY update_knp_auto_dict.sh /usr/local/bin
-COPY knp_user.dat knp_dict/user.dat
 
 COPY entrypoint.sh ./
 
