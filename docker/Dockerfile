@@ -67,6 +67,12 @@ RUN \
   && rm -rf knp-4.17 knp-4.17.tar.bz2 && knp -v \
   && update_knp_auto_dict.sh
 
-COPY entrypoint.sh ./
+RUN git clone --depth 1 --branch master --single-branch https://github.com/otolab/halumi-core.git halumi && rm -r halumi/.git halumi/docker
+
+WORKDIR /home/ubuntu/halumi
+
+RUN yarn install && yarn cache clean
+
+COPY entrypoint.sh /home/ubuntu/
 
 ENTRYPOINT ["/home/ubuntu/entrypoint.sh"]

@@ -6,10 +6,10 @@ services:
     build:
       context: ./docker
 
-    image: plaid/halumi-core
+    image: otolab/halumi-core
 
     environment:
-      SERVER_MODE: "true"
+      SERVER_MODE: "false"
       # ACCESS_CONTROL_ALLOW_ORIGIN: "tech.plaid.co.jp"
 
     ports:

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  halumi:
+    image: otolab/halumi-core
+
+    environment:
+      SERVER_MODE: "true"
+      ACCESS_CONTROL_ALLOW_ORIGIN: "tech.plaid.co.jp"
+
+    ports:
+      - 8101:8080
+
+    cap_add:
+      - SYS_TIME
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+      placement:
+        constraints:
+          - node.role == worker
