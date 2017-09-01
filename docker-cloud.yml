@@ -7,7 +7,7 @@ services:
 
     environment:
       SERVER_MODE: "true"
-      ACCESS_CONTROL_ALLOW_ORIGIN: "tech.plaid.co.jp"
+      ACCESS_CONTROL_ALLOW_ORIGIN: "http://tech.plaid.co.jp"
 
     ports:
       - 8101:8080
