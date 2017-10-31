@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_DIR="/home/ubuntu/knp_dict"
-CMD="${BASE_DIR}/make_db"
+CMD="/usr/local/bin/make_db"
 
 LANG=C
 gzip -dkq $BASE_DIR/*.gz

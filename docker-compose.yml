@@ -17,6 +17,8 @@ services:
 
     volumes:
       - ${HAL_DIR:-./}:/home/ubuntu/halumi:delegated
+      - knp-dict:/usr/local/share/knp
+      - juman-dict:/usr/local/share/juman
       - global-node-modules:/usr/local/lib/node_modules
       - yarn-cache:/home/ubuntu/.cache/yarn
 
@@ -24,5 +26,7 @@ services:
       - SYS_TIME
 
 volumes:
+  juman-dict:
+  knp-dict:
   global-node-modules:
   yarn-cache:
