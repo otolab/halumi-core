@@ -65,6 +65,7 @@ RUN echo "# build KNP" \
   && gzip -9 /root/dist/home/ubuntu/knp_dict/auto.dat /root/dist/home/ubuntu/knp_dict/wikipedia.dat \
   && rm -r knp-4.18.tar.bz2 knp-4.18/
 
+RUN strip /root/dist/usr/local/bin/jumanpp /root/dist/usr/local/bin/mkdarts_jumanpp /root/dist/usr/local/bin/knp
 
 # --------------------------------
 FROM ubuntu:16.04
@@ -105,29 +106,33 @@ RUN \
 USER ubuntu
 WORKDIR /home/ubuntu
 
-# halumi_coreライブラリを展開
-RUN \
-  git clone --depth 1 --branch master --single-branch https://github.com/otolab/halumi-core.git halumi \
-  && rm -r halumi/.git halumi/docker
-
-WORKDIR /home/ubuntu/halumi
-
-RUN yarn install && yarn cache clean
-
 # buildからコピー
 COPY --from=builder /root/dist /
 
 RUN sudo ldconfig
 
-RUN sudo chown ubuntu:ubuntu -R /home/ubuntu
-
-# entrypointで辞書構築も行う（volumeを使うとキャッシュできる）
-COPY entrypoint.sh /home/ubuntu/
+RUN sudo chown ubuntu:ubuntu /home/ubuntu
 
 # ユーザ辞書
 COPY knp_user.dat /home/ubuntu/knp_dict/user.dat
 
+# 辞書構築（volumeを使うとキャッシュできる）
+COPY init_dicts.sh /home/ubuntu/
+
 # ユーザ辞書更新のツール
 COPY update_knp_auto_dict.sh /home/ubuntu/knp_dict/
+
+# halumi_coreライブラリを展開
+RUN \
+  git clone --depth 1 --branch master --single-branch https://github.com/otolab/halumi-core.git halumi \
+  && rm -fr halumi/.git halumi/docker
+
+WORKDIR /home/ubuntu/halumi
+
+RUN yarn install && yarn cache clean
+
+# entrypointで辞書構築(init_dicts.sh)も行う
+COPY entrypoint.sh /home/ubuntu/
+
 
 ENTRYPOINT ["/home/ubuntu/entrypoint.sh"]
