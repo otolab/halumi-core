@@ -2,7 +2,10 @@
   "name": "halumi-core",
   "version": "0.2.0",
   "description": "",
-  "main": "libs/index.js",
+  "main": "index.js",
+  "directories": {
+    "lib": ["libs", "apps"]
+  },
   "scripts": {
     "test": "mocha test"
   },
