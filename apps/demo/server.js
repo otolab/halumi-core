@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const {comprehend, dequeue, startAsyncParser} = require('../libs')
+const {comprehend, dequeue, startAsyncParser} = require('../../libs')
 const patterns = require('./patterns')
 const {buildReply} = require('./reply')
 
