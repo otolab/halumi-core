@@ -10,6 +10,10 @@ const app_v0 = new Server()
 const DEFAULT_TIMEOUT = 10*1000
 let _withQueue = false
 
+app_v0.use('echo', function(req, res) {
+  res.json(req.data)
+})
+
 app_v0.use('comprehend', function(req, res) {
   const {text, patterns} = req.data
 

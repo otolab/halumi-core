@@ -4,6 +4,11 @@ const {Client} = require('bolt-rpc')
 
 const _connections = {}
 
+exports.STATUS = {
+  READY: 'ready',
+  CONNECTING: 'connecting'
+}
+
 function _connect(options) {
   const {
     scheme = 'http',
@@ -24,7 +29,13 @@ function _connect(options) {
 
 class HalumiCore {
   constructor(options) {
+    this.status = exports.STATUS.CONNECTING
     this.client = _connect(options)
+    this.client.send('v0/echo', {text: 'ok'}, (err, result) => {
+      if (result.text === 'ok') {
+        this.status = exports.STATUS.READY
+      }
+    })
   }
 
   comprehend(text, patterns, cb) {
@@ -38,3 +49,4 @@ class HalumiCore {
 
 
 exports.HalumiCore = HalumiCore
+
