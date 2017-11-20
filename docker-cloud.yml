@@ -6,8 +6,8 @@ services:
     image: otolab/halumi-core
 
     environment:
-      SERVER_MODE: "true"
-      ACCESS_CONTROL_ALLOW_ORIGIN: "http://tech.plaid.co.jp"
+      SERVER_MODE: "${HALUMI_CORE_MODE:-demo}"
+      ACCESS_CONTROL_ALLOW_ORIGIN: "${HALUMI_CORE_ORIGIN:-http://tech.plaid.co.jp}"
 
     ports:
       - 8101:8080
