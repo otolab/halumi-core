@@ -9,7 +9,7 @@ services:
     image: otolab/halumi-core
 
     environment:
-      SERVER_MODE: "false"
+      SERVER_MODE: "rpc"
       # ACCESS_CONTROL_ALLOW_ORIGIN: "tech.plaid.co.jp"
 
     ports:

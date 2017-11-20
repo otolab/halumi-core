@@ -15,6 +15,5 @@ if [ "$SERVER_MODE" = "rpc" ]; then
 elif ! [ "$SERVER_MODE" = "" ]; then
   exec node /home/ubuntu/halumi/apps/demo/server.js
 else
-  # exec tail -f /dev/null
-  exec /bin/bash
+  exec tail -f /dev/null
 fi

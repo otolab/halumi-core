@@ -9,9 +9,15 @@
   "author": "Naoto Kato <naoto.kato@plaid.co.jp>",
   "license": "MIT",
   "dependencies": {
+    "bolt-rpc": "git://github.com/plaidev/bolt-rpc.git#v1.2.1",
     "co": "^4.6.0",
     "express": "^4.15.3",
+    "socket.io": "^2.0.4",
     "split": "^1.0.0",
     "sweet-dates": "https://github.com/otolab/sweet-detes.git#0.1.5"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "socket.io-client": "^2.0.4"
   }
 }
