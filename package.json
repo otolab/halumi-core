@@ -7,7 +7,7 @@
     "lib": ["libs", "apps"]
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha -t 10000 --recursive"
   },
   "author": "Naoto Kato <naoto.kato@plaid.co.jp>",
   "license": "MIT",

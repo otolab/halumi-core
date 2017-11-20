@@ -27,10 +27,32 @@ function _connect(options) {
   return client
 }
 
+function callWithTimeout(timeout, f, cb) {
+  let called = false
+
+  const _cb = (...args) => {
+    if (called) return;
+    clearTimeout(timer)
+    called = true
+    cb(...args)
+  }
+
+  const timer = setTimeout(() => {
+    _cb(new Error('request timeout'))
+  }, timeout)
+
+  f(_cb)
+}
+
 class HalumiCore {
   constructor(options) {
     this.status = exports.STATUS.CONNECTING
     this.client = _connect(options)
+    this.timeout = 10 * 1000
+    this.checkStatus()
+  }
+
+  checkStatus() {
     this.client.send('v0/echo', {text: 'ok'}, (err, result) => {
       if (result.text === 'ok') {
         this.status = exports.STATUS.READY
@@ -43,7 +65,19 @@ class HalumiCore {
       text,
       patterns
     }
-    this.client.send('v0/comprehend', q, cb)
+
+    callWithTimeout(this.timeout, (next) => {
+      this.client.send('v0/comprehend', q, (...args) => {
+        this.status = exports.STATUS.READY
+        next(...args)
+      })
+    }, (err, ...args) => {
+      // call at once
+      if (err) {
+        this.status = exports.STATUS.CONNECTING
+      }
+      cb(err, ...args)
+    })
   }
 }
 
