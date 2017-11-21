@@ -8,6 +8,13 @@ function mapPhrases(phrases) {
   return phrases.map((phrase) => phrase.normalizedPhrase())
 }
 
+function removeCirculation(phrases) {
+  return phrases.map((phrase) => {
+    if (phrase.phrases) delete phrase.phrases;
+    return phrase
+  })
+}
+
 function match(patterns, phrases) {
   for (let i=0; i<patterns.length; i++) {
     const pattern = patterns[i]
@@ -49,17 +56,22 @@ function comprehend(src, patterns, options={}, cb) {
 
       const status = extractStatus(phrases)
 
-      const timePhrases = findInvolvedTimePhrases(cargo.phrases, phrases)
+      let timePhrases = findInvolvedTimePhrases(cargo.phrases, phrases)
+
+      const simplyPhrases = mapPhrases(phrases)
+      const simplyDays = dateList(timePhrases)
+
+      phrases = removeCirculation(phrases)
+      timePhrases = removeCirculation(timePhrases)
 
       let command = {
         command: k,
-        phrases: mapPhrases(phrases),
-        days: dateList(timePhrases),
+        phrases: simplyPhrases,
+        days: simplyDays,
         status: status,
         source: src,
         raw: {phrases, timePhrases}
       }
-
       commands.push(command)
     }
 
