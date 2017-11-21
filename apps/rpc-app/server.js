@@ -37,9 +37,6 @@ app_v0.use('comprehend', function(req, res) {
       console.log(err)
       return res.json({status: 400})
     }
-    commands.forEach(command => {
-      if (command.raw) delete command.raw
-    })
     if (!aborted) res.json({commands, status: 200})
   })
 })
