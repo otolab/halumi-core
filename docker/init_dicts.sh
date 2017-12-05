@@ -25,7 +25,7 @@ if [ ! -f /usr/local/share/jumanpp/dic.bin ]; then
   rm -v ../jumanpp-dict.tar.bz2
   cd dict-build
   make &> /dev/null
-  mv jumanpp_dict/* ../jumanpp-resource
+  mv jumanpp_dic/* ../jumanpp-resource
   rm -rv jumanpp_dic
   cd ..
   echo "" | jumanpp -D jumanpp-resource
